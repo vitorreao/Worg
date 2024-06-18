@@ -1,0 +1,14 @@
+# VCPKG
+.vcpkg/
+
+# CMake
+CMakeUserPresets.json
+build/
+.cache/
+
+# VS Code
+.vscode/
+
+# Visual Studio (not Code)
+.vs/
+
