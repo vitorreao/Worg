@@ -14,37 +14,29 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-typedef unsigned long WgUInt;
+#include <stddef.h>
+#include <stdint.h>
+
+typedef uint32_t WgUInt;
+
+typedef struct WgObject *WgObjectID;
+
+typedef enum WgErrorCode {
+  WG_ERROR_CODE_NO_ERROR = 0,
+} WgErrorCode;
+
+typedef struct WgError {
+  char *message;
+  WgObjectID object;
+  WgErrorCode code;
+} WgError;
 
 typedef enum WgPrimitiveType {
   WG_TRIANGLES = 3,
 } WgPrimitiveType;
 
-typedef struct WgTriangle {
-  WgPrimitiveType type;
-  WgUInt elems[3];
-} WgTriangle;
-
-typedef union WgPrimitive {
-  WgPrimitiveType type;
-  WgTriangle triangle;
-} WgPrimitive;
-
-typedef struct WgBufferLayout {
-  WgUInt size;
-  WgUInt *attribs;
-} WgBufferLayout;
-
-typedef struct WgBuffer {
-  WgUInt id;
-  WgUInt size;
-  WgBufferLayout layout;
-} WgBuffer;
-
-typedef struct WgObject {
-  WgUInt id;
-  WgBuffer data;
-  WgPrimitive *primitives;
-  WgUInt size;
-} WgObject;
+WgObjectID WgNewObject();
+WgError *WgAttachBuffer(WgObjectID object, void *data, size_t size);
+WgError *WgAttachLayout(WgObjectID object, size_t *attribSizes, size_t size);
+WgError *WgAttachPrimitives(WgObjectID object, WgPrimitiveType type, WgUInt *indices, size_t size);
 
